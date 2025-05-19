@@ -1,8 +1,9 @@
 from django.urls import path
 
-from maxsulot.views import MaxsulotView, MaxsukotCreateView
+from maxsulot.views import MaxsulotListCreateView, CommentListCreateAPIView
 
 urlpatterns = [
-    path('posts-list/', MaxsulotView.as_view(), name='maxsulot-list'),
-    path('posts-create/', MaxsukotCreateView.as_view(), name='maxsulot-create'),
+    path('maxsulot/', MaxsulotListCreateView.as_view(), name='maxsulot-list-create'),
+    path('products/<int:product_id>/comments/', CommentListCreateAPIView.as_view(), name='comment-list-create'),
+
 ]

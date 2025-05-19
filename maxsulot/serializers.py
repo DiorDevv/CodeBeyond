@@ -7,9 +7,11 @@ from .models import Product, Category, Comment, MaxsulotLike, CommentLike
 
 class CategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Category
         fields = ['id', 'name']
+
 
 #
 # class UserSerializer(serializers.ModelSerializer):
@@ -77,33 +79,39 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    author = UserSerializer(read_only=True)
+    author = UserSerializer(source="user", read_only=True)
     product = serializers.PrimaryKeyRelatedField(read_only=True)
-    replies = serializers.SerializerMethodField('get_replies')
-    me_liked = serializers.SerializerMethodField('get_me_liked')
-    like_count = serializers.SerializerMethodField('get_likes_count')
+    replies = serializers.SerializerMethodField()
+    me_liked = serializers.SerializerMethodField()
+    like_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ['id', 'author', 'text', 'like_count', 'parent', 'replies', 'product']
+        fields = ['id', 'author', 'text', 'like_count', 'parent', 'replies', 'product', 'me_liked']
 
     def get_replies(self, obj):
-        if obj.child.exists():
-            serializers = self.__class__(obj.child.all(), many=True, context=self.context)
-            return serializers.data
-        else:
-            return None
+        if hasattr(obj, 'child') and obj.child.exists():
+            serializer = CommentSerializer(obj.child.all(), many=True, context=self.context)
+            return serializer.data
+        return None
 
     def get_me_liked(self, obj):
         user = self.context.get('request').user
         if user.is_authenticated:
             return obj.likes.filter(author=user).exists()
-        else:
-            return False
+        return False
 
-    @staticmethod
-    def get_likes_count(obj):
+    def get_like_count(self, obj):
         return obj.likes.count()
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        product = self.context.get('product')
+        return Comment.objects.create(
+            user=request.user,
+            product=product,
+            **validated_data
+        )
 
 
 class CommentLikeSerializer(serializers.ModelSerializer):

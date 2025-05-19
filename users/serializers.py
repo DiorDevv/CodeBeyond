@@ -9,13 +9,15 @@ from .models import CustomUser
 class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = CustomUser
-        fields = ('id', 'email', 'username', 'password')
+        fields = ('id', 'email', 'username', 'password', 'is_staff', 'is_active')
 
 
 class UserSerializer(BaseUserSerializer):
+    id = serializers.IntegerField(read_only=True)
+
     class Meta(BaseUserSerializer.Meta):
         model = CustomUser
-        fields = ('id', 'email', 'username', 'is_staff', 'is_superuser', 'is_active', 'groups', 'user_permissions')
+        fields = ('id', 'email', 'username', 'password')
 
 
 class EmailSerializers(serializers.Serializer):
