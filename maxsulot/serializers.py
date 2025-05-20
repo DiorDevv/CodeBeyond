@@ -70,7 +70,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    author = UserSerializer(source="user", read_only=True)
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
     product = serializers.PrimaryKeyRelatedField(read_only=True)
     replies = serializers.SerializerMethodField()
     me_liked = serializers.SerializerMethodField()
@@ -79,6 +79,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'author', 'text', 'like_count', 'parent', 'replies', 'product', 'me_liked']
+        extra_kwargs = {"parent": {"required": False}}
 
     def get_replies(self, obj):
         if hasattr(obj, 'child') and obj.child.exists():
@@ -94,15 +95,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_like_count(self, obj):
         return obj.likes.count()
-
-    def create(self, validated_data):
-        request = self.context.get('request')
-        product = self.context.get('product')
-        return Comment.objects.create(
-            user=request.user,
-            product=product,
-            **validated_data
-        )
 
 
 class CommentLikeSerializer(serializers.ModelSerializer):
