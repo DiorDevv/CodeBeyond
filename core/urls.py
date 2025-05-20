@@ -28,6 +28,6 @@ urlpatterns = [
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.jwt')),
     path('users/', include('users.urls')),
-    path('maxsulot/', include('maxsulot.urls')),
+    path('product/', include('maxsulot.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

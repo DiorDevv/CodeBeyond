@@ -4,9 +4,9 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 
-from maxsulot.models import Product, Comment
+from maxsulot.models import Product, Comment, MaxsulotLike
 from maxsulot.permessions import IsSuperUser
-from maxsulot.serializers import ProductSerializer, CommentSerializer
+from maxsulot.serializers import ProductSerializer, CommentSerializer, CommentLikeSerializer, PostLikeSerializer
 
 
 class ProductListView(ListAPIView):
@@ -62,7 +62,6 @@ class CommentListApiViews(generics.ListAPIView):
 
     def get_queryset(self):
         product_id = self.kwargs['id']
-        # Berilgan productga tegishli commentlarni olib keladi
         return Comment.objects.filter(product_id=product_id, parent__isnull=True)  # faqat asosiy commentlar
 
 
@@ -74,3 +73,18 @@ class CommentCreateView(CreateAPIView):
         product_id = self.kwargs['id']
         product = Product.objects.get(id=product_id)
         serializer.save(author=self.request.user, product=product)
+
+
+class ProductLikeListView(generics.ListAPIView):
+    serializer_class = PostLikeSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        product_id = self.kwargs['id']
+        return MaxsulotLike.objects.filter(product_id=product_id)
+
+
+class CommentRetrieveApiView(generics.RetrieveAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [AllowAny]
+    queryset = Comment.objects.all()

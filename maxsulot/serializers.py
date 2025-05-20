@@ -98,7 +98,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CommentLikeSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     author = UserSerializer(read_only=True)
 
     class Meta:
@@ -112,55 +112,7 @@ class PostLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MaxsulotLike
-        fields = ("id", "user", "product")
+        fields = ("id", "author", "product")
 
-#
-# class CommentReplySerializer(serializers.ModelSerializer):
-#     user = serializers.StringRelatedField()
-#     likes_count = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         model = Comment
-#         fields = ['id', 'user', 'text', 'created_at', 'likes_count']
-#
-#     def get_likes_count(self, obj):
-#         return obj.likes.count()
-#
-#
-# class CommentSerializer(serializers.ModelSerializer):
-#     user = serializers.StringRelatedField()
-#     likes_count = serializers.SerializerMethodField()
-#     replies = CommentReplySerializer(many=True, read_only=True)
-#
-#     class Meta:
-#         model = Comment
-#         fields = ['id', 'user', 'text', 'created_at', 'likes_count', 'parent', 'replies']
-#
-#     def get_likes_count(self, obj):
-#         return obj.likes.count()
-#
-#
-# class ProductSerializer(serializers.ModelSerializer):
-#     category = CategorySerializer(many=True, read_only=True)
-#     comments = CommentSerializer(many=True, read_only=True)
-#     likes_count = serializers.SerializerMethodField()
-#     views_count = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'name', 'description', 'image', 'created_at', 'category',
-#                   'likes_count', 'views_count', 'comments']
-#
-#     def get_likes_count(self, obj):
-#         return obj.likes.count()
-#
-#     def get_views_count(self, obj):
-#         return obj.views.count()
-#
-#
-# class ProductCreateSerializer(serializers.ModelSerializer):
-#     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), many=True)
-#
-#     class Meta:
-#         model = Product
-#         fields = ['name', 'description', 'image', 'category']
+
+
