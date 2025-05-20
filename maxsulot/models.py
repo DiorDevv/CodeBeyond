@@ -37,7 +37,7 @@ class Product(BaseModel):
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     text = models.TextField()
     parent = models.ForeignKey(
         'self',
@@ -46,30 +46,30 @@ class Comment(models.Model):
         related_name='child')
 
     def __str__(self):
-        return f'{self.user.username} → {self.text[:30]}'
+        return f'{self.author.username} → {self.text[:30]}'
 
 
 class MaxsulotLike(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='likes')
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['user', 'product'],
+                fields=['author', 'product'],
                 name='product_like_unique'
             )
         ]
 
 
 class CommentLike(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='likes')
 
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=['user', 'comment'],
+                fields=['author', 'comment'],
                 name='comment_like_unique'
             )
         ]

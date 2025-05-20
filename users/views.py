@@ -38,7 +38,7 @@ class ConfirmationSendToEmailGenericAPIView(GenericAPIView):
             'password': serializer.validated_data['password'],
         }
         cache.set(email, data, timeout=300)  # 5 daqiqa
-        send_verifications(email, f"{code} JSFSDBKJLBSLHCBAHLLSCVLAJBDAGSEDWEYF")
+        send_verifications(email=email, message=f"tasdiqlash kodingiz {code}")
         return Response({
             "detail": "Activation email sent.",
             "code": "user_created",

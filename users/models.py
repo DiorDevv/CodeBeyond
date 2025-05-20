@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+
 class Role(models.TextChoices):
     ADMIN = "admin", "Admin"
     USER = "user", "User"

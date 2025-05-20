@@ -13,18 +13,9 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-#
-# class UserSerializer(serializers.ModelSerializer):
-#     id = serializers.IntegerField(read_only=True)
-#
-#     class Meta:
-#         model = CustomUser
-#         fields = ['id', 'username', 'email', 'first_name', 'last_name']
-
-
 class ProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    author = UserSerializer(read_only=True)
+    author = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
     # Write uchun category faqat id-larni qabul qiladi
     category = serializers.PrimaryKeyRelatedField(
@@ -69,7 +60,7 @@ class ProductSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         if request and request.user.is_authenticated:
             try:
-                MaxsulotLike.objects.get(post=obj, author=request.user)
+                MaxsulotLike.objects.get(product=obj, author=request.user)
                 return True
             except MaxsulotLike.DoesNotExist:
                 return False

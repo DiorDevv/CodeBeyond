@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "djoser",
     'drf_yasg',  # Swagger uchun
+    'django_filters',
 
     # applications
     'users',  # users app
@@ -75,15 +76,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'diyorbekaxmadjonov98@gmail.com'
-EMAIL_HOST_PASSWORD = 'hpqwytckhpkagrbs'
-
-
-# JWT sozlamalari
+EMAIL_HOST_USER = 'aaqcham@gmail.com'
+EMAIL_HOST_PASSWORD = 'rcbzziwigfiocfvx'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 DJOSER = {
@@ -163,4 +163,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'users.CustomUser'    
+AUTH_USER_MODEL = 'users.CustomUser'

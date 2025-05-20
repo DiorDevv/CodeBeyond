@@ -17,7 +17,7 @@ class UserSerializer(BaseUserSerializer):
 
     class Meta(BaseUserSerializer.Meta):
         model = CustomUser
-        fields = ('id', 'email', 'username', 'password')
+        fields = ('id', 'email', 'username', 'password', 'is_staff', 'is_active')
 
 
 class EmailSerializers(serializers.Serializer):
