@@ -12,6 +12,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
         fields = ('id', 'email', 'username', 'password', 'is_staff', 'is_active')
 
 
+
 class UserSerializer(BaseUserSerializer):
     id = serializers.IntegerField(read_only=True)
 
