@@ -115,4 +115,5 @@ class PostLikeSerializer(serializers.ModelSerializer):
         fields = ("id", "author", "product")
 
 
-
+class bwibf:
+    pass
