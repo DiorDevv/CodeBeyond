@@ -22,6 +22,7 @@ class UserSerializer(BaseUserSerializer):
 
 
 
+
 class EmailSerializers(serializers.Serializer):
     email = serializers.EmailField()
     username = serializers.CharField()
