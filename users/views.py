@@ -95,6 +95,7 @@ class ForgotPasswordGenericAPIView(GenericAPIView):
 
 
 
+
 class UserListView(ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
