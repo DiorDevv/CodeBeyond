@@ -11,3 +11,5 @@ make mig:
 
 make superuser:
 	python manage.py createsuperuser
+
+make

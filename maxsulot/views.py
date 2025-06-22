@@ -88,6 +88,8 @@ class ProductCommentCreateView(CreateAPIView):
 
 
 
+
+
 class CommentDetailApiView(generics.RetrieveAPIView):
     serializer_class = CommentSerializer
     permission_classes = [AllowAny]
