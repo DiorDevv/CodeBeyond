@@ -86,7 +86,7 @@ class ProductCommentCreateView(CreateAPIView):
         product = Product.objects.get(id=product_id)
         serializer.save(author=self.request.user, product=product)
 
-\
+
 
 
 
