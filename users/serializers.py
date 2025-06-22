@@ -20,6 +20,7 @@ class UserSerializer(BaseUserSerializer):
         fields = ('id', 'email', 'username', 'password', 'is_staff', 'is_active')
 
 
+
 class EmailSerializers(serializers.Serializer):
     email = serializers.EmailField()
     username = serializers.CharField()

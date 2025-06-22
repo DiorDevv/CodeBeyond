@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 
-from maxsulot.models import Product, Comment, MaxsulotLike
+from maxsulot.models import Product, Comment, MaxsulotLike, CommentLike
 from maxsulot.permessions import IsSuperUser
 from maxsulot.serializers import ProductSerializer, CommentSerializer, CommentLikeSerializer, PostLikeSerializer
 
@@ -56,25 +56,6 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         )
 
 
-class CommentListApiViews(generics.ListAPIView):
-    serializer_class = CommentSerializer
-    permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        product_id = self.kwargs['id']
-        return Comment.objects.filter(product_id=product_id, parent__isnull=True)  # faqat asosiy commentlar
-
-
-class CommentCreateView(CreateAPIView):
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        product_id = self.kwargs['id']
-        product = Product.objects.get(id=product_id)
-        serializer.save(author=self.request.user, product=product)
-
-
 class ProductLikeListView(generics.ListAPIView):
     serializer_class = PostLikeSerializer
     permission_classes = [AllowAny]
@@ -84,7 +65,39 @@ class ProductLikeListView(generics.ListAPIView):
         return MaxsulotLike.objects.filter(product_id=product_id)
 
 
-class CommentRetrieveApiView(generics.RetrieveAPIView):
+"------------------------------------------------------------------"
+
+
+class ProductCommentListApiViews(generics.ListAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        product_id = self.kwargs['id']
+        return Comment.objects.filter(product_id=product_id)
+
+
+class ProductCommentCreateView(CreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        product_id = self.kwargs['id']
+        product = Product.objects.get(id=product_id)
+        serializer.save(author=self.request.user, product=product)
+
+
+
+class CommentDetailApiView(generics.RetrieveAPIView):
     serializer_class = CommentSerializer
     permission_classes = [AllowAny]
     queryset = Comment.objects.all()
+
+
+class CommentLikeListView(generics.ListAPIView):
+    serializer_class = CommentLikeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        comment_id = self.kwargs['id']
+        return CommentLike.objects.filter(comment_id=comment_id)

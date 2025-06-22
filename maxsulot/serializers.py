@@ -109,7 +109,7 @@ class CommentLikeSerializer(serializers.ModelSerializer):
 class PostLikeSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
     author = UserSerializer(read_only=True)
-
+    product = ProductSerializer(read_only=True)
     class Meta:
         model = MaxsulotLike
         fields = ("id", "author", "product")

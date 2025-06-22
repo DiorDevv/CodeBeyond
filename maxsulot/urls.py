@@ -1,15 +1,17 @@
 from django.urls import path
 
-from maxsulot.views import ProductListView, ProductCreateView, ProductRetrieveUpdateDestroyAPIView, CommentListApiViews, \
-    CommentCreateView, ProductLikeListView, CommentRetrieveApiView
+from maxsulot.views import ProductListView, ProductCreateView, ProductRetrieveUpdateDestroyAPIView, \
+    ProductCommentListApiViews, \
+    ProductCommentCreateView, ProductLikeListView, CommentDetailApiView, CommentLikeListView
 
 urlpatterns = [
-    path('product-list/', ProductListView.as_view(), name='product-list'),
-    path('product-create/', ProductCreateView.as_view(), name='product-create'),
-    path('product/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-update-delete'),
-    path('<int:id>/comment-lists/', CommentListApiViews.as_view(), name='comment-list'),
-    path('<int:id>/comments/create/', CommentCreateView.as_view(), name='comment-create'),
+    path('list/', ProductListView.as_view(), name='product-list'),
+    path('create/', ProductCreateView.as_view(), name='product-create'),
+    path('<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-update-delete'),
     path('<int:id>/like', ProductLikeListView.as_view(), name='product-like'),
-    path('<int:pk>/commet', CommentRetrieveApiView.as_view(), name='comment'),
-
+    path('<int:id>/comments/', ProductCommentListApiViews.as_view(), name='comment-list'),
+    path('<int:id>/commet-create/', ProductCommentCreateView.as_view(), name='comment-create'),
+    
+    path('comment/<int:pk>/', CommentDetailApiView.as_view(), name='comment-detail'),
+    path('comment/<int:id>/like', CommentLikeListView.as_view(), name='comment-like'),
 ]
