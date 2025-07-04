@@ -87,9 +87,6 @@ class ProductCommentCreateView(CreateAPIView):
         serializer.save(author=self.request.user, product=product)
 
 
-
-
-
 class CommentDetailApiView(generics.RetrieveAPIView):
     serializer_class = CommentSerializer
     permission_classes = [AllowAny]
