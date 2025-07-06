@@ -1,15 +1,9 @@
-
-make run:
+run:
 	python manage.py runserver
 
-make mig:
+mig:
 	python manage.py makemigrations
 	python manage.py migrate
 
-
-
-
-make superuser:
+superuser:
 	python manage.py createsuperuser
-
-make
